@@ -116,6 +116,7 @@ class QwopEnv(gym.Env):
         the env (useful when a human is playing)
     loglevel: Logger level (DEBUG|INFO|WARN|ERROR).
     seed: Initial seed for QWOP.min.js's RNG.
+    speed_rew_multi: The multiplier for the speed reward.
     """
 
     metadata = {"render_modes": ["browser", "rgb_array"], "render_fps": 30}
@@ -139,6 +140,7 @@ class QwopEnv(gym.Env):
         loglevel="WARN",
         seed=None,
         browser_mock=False,
+        speed_rew_mult=0.01,
     ):
         seedval = seed or np.random.default_rng().integers(2**31)
         assert seedval >= 0 and seedval <= np.iinfo(np.int32).max
@@ -194,7 +196,7 @@ class QwopEnv(gym.Env):
             shape=(60,), low=-1, high=1, dtype=DTYPE
         )
 
-        self.speed_rew_mult = DTYPE(0.01)
+        self.speed_rew_mult = DTYPE(speed_rew_mult)
         self.time_cost_mult = DTYPE(time_cost_mult)
         self.failure_cost = DTYPE(failure_cost)
         self.success_reward = DTYPE(success_reward)
